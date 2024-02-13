@@ -35,13 +35,9 @@ class Ball:
         pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius)
       
 def run_game():
-    # Clock to control the frame rate
     clock = pygame.time.Clock()
-
-    # List to store balls
     balls = []
-
-    # Initial ball
+    # Initial ball for demonstration
     balls.append(Ball(x=400, y=300, radius=20, speed_x=5, speed_y=5, color=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))))
 
     running = True
@@ -49,27 +45,35 @@ def run_game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            # Add a ball on mouse click
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = pygame.mouse.get_pos()
-                balls.append(Ball(x, y, radius=20, speed_x=random.randint(-5, 5), speed_y=random.randint(-5, 5), color=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))))
+                if event.button == 1:  # Left click to add a ball
+                    x, y = event.pos
+                    balls.append(Ball(x, y, radius=20, speed_x=random.randint(-5, 5), speed_y=random.randint(-5, 5), color=(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))))
+                elif event.button == 3 and balls:  # Right click to remove the last ball
+                    balls.pop()
+        
+        # Check for key presses to adjust speed
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+            for ball in balls:
+                ball.speed_x *= 1.1
+                ball.speed_y *= 1.1
+        if keys[pygame.K_BACKSPACE]:
+            for ball in balls:
+                ball.speed_x *= 0.9
+                ball.speed_y *= 0.9
 
-        # Fill the screen with black
         screen.fill(BLACK)
-
-        # Move and draw balls
         for ball in balls:
             ball.move()
             ball.draw(screen)
 
-        # Update the display
         pygame.display.flip()
-
-        # Cap the frame rate
         clock.tick(60)
 
     pygame.quit()
     sys.exit()
+
 
 if __name__ == "__main__":
     run_game()
