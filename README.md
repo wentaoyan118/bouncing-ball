@@ -1,5 +1,7 @@
 # bouncing-ball
 
+Specifications:
+
 1. Ball Entities
 Each ball should be represented as an object with attributes for color, size (radius), position (x, y coordinates), and velocity (speed and direction).
 Colors: Each ball should have a unique color, randomly assigned from a color set.
